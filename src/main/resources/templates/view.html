@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+		<div class="card">
+			<div class="card-header bg-dark text-white h4" th:text="${title}"></div>
+			<div class="card-body px-5">
+
+				<div class="row mb-0">
+					<a th:href="@{'/list/'}" class="btn btn-link btn-sm mb-3">
+						<i class="fas fa-arrow-left"></i>
+						<span th:utext="' ' + #{text.global.volver}"></span>
+					</a>
+				</div>
+
+				<div class="row justify-content-center align-items-center">
+					<div class="col-12 col-lg-3">
+						<img
+							th:if="${client.photo != null && #strings.length(client.photo) > 0}"
+							class="rounded float-left m-2 p-2" style="max-width: 100%;"
+							th:src="@{'/uploads/' + ${client.photo}}"
+							th:alt="${client.photo}"> <img
+							th:unless="${client.photo != null && #strings.length(client.photo) > 0}"
+							style="max-width: 100%;" th:alt="${client.photo}"
+							th:src="@{'/uploads/' + avatar_default.jpg}"
+							class="rounded float-left m-2 p-2">
+					</div>
+					<div class="col-12 col-lg-9 align-self-center">
+						<ul class="list-group shadow-sm rounded">
+							<li class="list-group-item"
+								th:text="#{text.client.nombre} + ': ' + ${client.firstName}"></li>
+							<li class="list-group-item"
+								th:text="#{text.client.apellido} + ': ' + ${client.lastName}"></li>
+							<li class="list-group-item"
+								th:text="#{text.client.email} + ': ' + ${client.email}"></li>
+							<li class="list-group-item"
+								th:text="#{text.client.createAt} + ': ' + ${client.createAt}"></li>
+						</ul>
+
+						<div class="card-title pt-3 ">
+							<a sec:authorize="hasRole('ROLE_ADMIN')"
+								class="btn btn-md btn-success btn-sm-block"
+								th:href="@{'/invoice/form/' + ${client.id}}">
+								<i class="fas fa-file-invoice-dollar"></i>
+								<span th:text="' ' + #{text.client.invoice.create}"></span>
+							</a>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div th:if="${#lists.isEmpty(client.invoices)}"
+					class="alert alert-info my-4"
+					th:text="#{text.client.detail.no.invoice} + ' ' + ${client.firstName} + ' ' + ${client.lastName} + '.'"></div>
+				<div class="table-responsive">
+
+					<table th:if="${not #lists.isEmpty(client.invoices)}"
+						class="table table-bordered table-striped my-4 shadow pt-3 bg-white rounded">
+						<thead class="thead-dark">
+							<tr>
+								<th th:text="#{text.client.invoice.folio}">folio</th>
+								<th th:text="#{text.client.invoice.description}">description</th>
+								<th th:text="#{text.client.invoice.date}">date</th>
+								<th th:text="#{text.client.invoice.total}">total</th>
+								<th sec:authorize="hasRole('ROLE_ADMIN')"
+									th:text="#{text.client.invoice.details}"><i
+									class="fas fa-home"></i> <span
+										th:utext="' ' + #{text.global.back}"></span>view</th>
+								<th sec:authorize="hasRole('ROLE_ADMIN')"
+									th:text="#{text.cliente.factura.eliminar}"><i
+									class="fas fa-home"></i> <span
+										th:utext="' ' + #{text.global.back}"></span>delete</th>
+						</thead>
+						<tbody>
+							<tr th:each="invoice: ${client.invoices}">
+								<td class="text-center" th:text="${invoice.id}"></td>
+								<td th:text="${invoice.description}"></td>
+								<td th:text="${invoice.createAt}"></td>
+								<td th:text="${invoice.total}"></td>
+								<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')"><a
+										class="btn btn-info btn-sm"
+										th:href="@{'/invoice/view/' + ${invoice.id}}">
+										<i class="fas fa-info-circle"></i>
+										<span th:text="' ' + #{text.client.invoice.details}"></span>
+									</a></td>
+								<td class="text-center" sec:authorize="hasRole('ROLE_ADMIN')"><a
+										class="btn btn-danger btn-sm"
+										th:href="@{'/invoice/delete/' + ${invoice.id}}"
+										th:attr="onclick='return confirm(\'' + #{text.client.invoice.deleteOk} + '\');'">
+										<i class="fas fa-trash-alt"></i>
+										<span th:text="' ' + #{text.client.invoice.delete}"></span>
+									</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+
+</html>
