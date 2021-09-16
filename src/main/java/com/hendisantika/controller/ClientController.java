@@ -3,22 +3,31 @@ package com.hendisantika.controller;
 import com.hendisantika.entity.Client;
 import com.hendisantika.service.ClientService;
 import com.hendisantika.service.UploadFileService;
+import com.hendisantika.util.PageRender;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.util.Locale;
 
@@ -78,9 +87,67 @@ public class ClientController {
 
         model.addAttribute("client", client);
         model.addAttribute("title",
-                messageSource.getMessage("text.client.list.title", null, locale) + ": " + client.getFirstName());
+                messageSource.getMessage("text.client.lists.title", null, locale) + ": " + client.getFirstName());
 
         return "view";
     }
+
+    /* ----- List Clients ----- */
+    @GetMapping(value = {"/list", "/"})
+    public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
+                       Authentication authentication, HttpServletRequest request, Locale locale) {
+
+        // 2 Ways of seeing Roles
+        // 1st Way
+        if (authentication != null) {
+            logger.info("Hello authenticated user, your username is: " + authentication.getName());
+        }
+
+        // 2nd Way(static)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            logger.info(
+                    "Using static form 'SecurityContextHolder.getContext (). GetAuthentication ();': Authenticated " +
+                            "user, username: "
+                            + auth.getName());
+        }
+
+        // 3 Ways of assigning Roles
+        // 1st Way
+        if (hasRole("ROLE_ADMIN")) {
+            logger.info("Halo " + auth.getName() + " you have access");
+        } else {
+            logger.info("Halo " + auth.getName() + " You do not have access");
+        }
+
+        // 2nd Way
+        SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
+                "ROLE_");
+
+        if (securityContext.isUserInRole("ADMIN")) {
+            logger.info(
+                    "Way using SecurityContextHolderAwareRequestWrapper: Hello " + auth.getName() + " you have access");
+        } else {
+            logger.info("Way using SecurityContextHolderAwareRequestWrapper: Hello " + auth.getName()
+                    + " You do not have access");
+        }
+
+        // 3rd Way
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            logger.info("Form using HttpServletRequest: Hello " + auth.getName() + " you have access");
+        } else {
+            logger.info("Form using HttpServletRequest: Hello " + auth.getName() + " You do not have access");
+        }
+
+        Pageable pageRequest = PageRequest.of(page, 5);
+        Page<Client> clients = clientService.findAll(pageRequest);
+        PageRender<Client> pageRender = new PageRender<>("/list", clients);
+
+        model.addAttribute("title", messageSource.getMessage("text.client.lists.title", null, locale));
+        model.addAttribute("clients", clients);
+        model.addAttribute("page", pageRender);
+        return "list";
+    }
+
 
 }
