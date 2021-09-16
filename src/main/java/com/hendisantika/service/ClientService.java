@@ -5,6 +5,8 @@ import com.hendisantika.repository.ClientRepository;
 import com.hendisantika.repository.InvoiceRepository;
 import com.hendisantika.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,18 @@ public class ClientService {
     @Transactional(readOnly = true)
     public List<Client> findAll() {
         return (List<Client>) clientRepository.findAll();
+    }
+
+    /*----- Paginator -----*/
+    @Transactional(readOnly = true)
+    public Page<Client> findAll(Pageable pageable) {
+        return clientRepository.findAll(pageable);
+    }
+
+    /*----- Method Find By ID -----*/
+    @Transactional(readOnly = true)
+    public Client findOne(Long id) {
+        return clientRepository.findById(id).orElse(null);
     }
 
 }
