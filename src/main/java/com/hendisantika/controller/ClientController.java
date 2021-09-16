@@ -21,13 +21,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Locale;
 
@@ -184,5 +190,52 @@ public class ClientController {
         model.addAttribute("title", messageSource.getMessage("text.client.form.title.edit", null, locale));
 
         return "form";
+    }
+
+    /* ----- Save Client ----- */
+    @Secured("ROLE_ADMIN")
+    @PostMapping(value = "/form")
+    public String save(@Valid Client client, BindingResult result, Model model,
+                       @RequestParam("file") MultipartFile photo, RedirectAttributes flash, SessionStatus status,
+                       Locale locale) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("text.client.form.title", null, locale));
+            return "form";
+        }
+
+        /* ----- Upload Photo ----- */
+        if (!photo.isEmpty()) {
+
+            if (client.getId() != null
+                    && client.getId() > 0
+                    && client.getPhoto() != null
+                    && client.getPhoto().length() > 0) {
+                uploadFileService.delete(client.getPhoto());
+            }
+
+            String uniqueFilename = null;
+
+            try {
+                uniqueFilename = uploadFileService.copy(photo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            flash.addFlashAttribute(
+                    "info", messageSource.getMessage("text.client.flash.foto.upload.success", null, locale)
+                            + "'" + uniqueFilename + "'");
+            client.setPhoto(uniqueFilename);
+
+        }
+
+        String flashMsg = (client.getId() != null)
+                ? messageSource.getMessage("text.client.flash.edit.success", null, locale)
+                : messageSource.getMessage("text.client.flash.create.success", null, locale);
+
+        clientService.save(client);
+        status.setComplete();
+        flash.addFlashAttribute("success", flashMsg);
+        return "redirect:/list";
     }
 }
