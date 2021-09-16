@@ -149,5 +149,14 @@ public class ClientController {
         return "list";
     }
 
+    /* ----- Create Client ----- */
+    @Secured("ROLE_ADMIN")
+    @GetMapping(value = "/form")
+    public String create(Model model, Locale locale) {
+        Client client = new Client();
+        model.addAttribute("client", client);
+        model.addAttribute("title", messageSource.getMessage("text.client.form.title.create", null, locale));
+        return "form";
+    }
 
 }
