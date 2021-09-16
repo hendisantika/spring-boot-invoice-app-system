@@ -238,4 +238,25 @@ public class ClientController {
         flash.addFlashAttribute("success", flashMsg);
         return "redirect:/list";
     }
+
+    /* ----- Delete Client ----- */
+    @Secured("ROLE_ADMIN")
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash, Locale locale) {
+
+        if (id > 0) {
+            Client client = clientService.findOne(id);
+            clientService.delete(id);
+
+            flash.addFlashAttribute("success", messageSource.getMessage("text.client.flash.delete.success", null,
+                    locale));
+
+            if (uploadFileService.delete(client.getPhoto())) {
+                String messageDeletePhoto = String.format(messageSource.getMessage("text.client.flash.foto.delete" +
+                        ".success", null, locale), client.getPhoto());
+                flash.addFlashAttribute("info", messageDeletePhoto);
+            }
+        }
+        return "redirect:/list";
+    }
 }
