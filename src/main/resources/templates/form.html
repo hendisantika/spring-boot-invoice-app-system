@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+		<div class="card">
+			<div class="card-header bg-success text-white h3 pl-4"
+				th:text="${title}"></div>
+
+			<div class="card-body d-flex justify-content-center">
+
+				<form th:action="@{/form}" th:object="${client}" method="post"
+					enctype="multipart/form-data" class="col-lg-8 col-sm-12">
+
+					<div class="form-group row mb-0">
+						<a class="btn btn-sm mb-4 btn-link" th:href="@{'/list'}">
+							<i class="fas fa-arrow-left"></i>
+							<span th:text="' ' + #{text.global.back}"></span>
+						</a>
+					</div>
+
+
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label"
+							th:text="#{text.client.name}">Name</label>
+
+						<div class="col-sm-9">
+							<input type="text" th:field="*{firstName}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('firstName')}"
+								th:errors="*{firstName}"></small>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label"
+							th:text="#{text.client.lastname}">Last name</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{lastName}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label"
+							th:text="#{text.client.email}">Email</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{email}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label"
+							th:text="#{text.client.createAt}">Date</label>
+						<div class="col-sm-9">
+							<input type="date" class="form-control" th:field="*{createAt}"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="file" class="col-sm-3 col-form-label"
+							th:text="#{text.cliente.foto}">Foto</label>
+						<div class="col-sm-9">
+							<input type="file" name="file" id="file"
+								class="form-control custom-file-input" id="filePhoto" /> <label
+								class="custom-file-label text-center"
+								style="right: 15px; left: 15px;"
+								th:text="#{text.client.foto.choose}"> </label>
+						</div>
+					</div>
+
+					<div class="form-group row justify-content-around align-items-center">
+						<div class="col-6 col-lg-2">
+							<button type="submit" th:text="#{text.client.save}"
+								class="btn btn-md btn-success mt-4"></button>
+						</div>
+						<div class="col-6 col-lg-2">
+							<button type="submit" th:text="#{text.client.clear}"
+								class="btn btn-md mt-4 reset"></button>
+						</div>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+
+	<script>
+		$(document).on('change', '.custom-file-input', function(e) {
+			$(this).next('.custom-file-label').html(e.target.files[0].name);
+		})
+
+		$(".reset").click(function() {
+			$(this).closest('form').find("input[type=text], textarea").val("");
+		});
+	</script>
+
+</body>
+
+</html>
