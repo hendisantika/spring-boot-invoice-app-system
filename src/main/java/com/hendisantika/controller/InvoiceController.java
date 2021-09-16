@@ -1,5 +1,6 @@
 package com.hendisantika.controller;
 
+import com.hendisantika.entity.Client;
 import com.hendisantika.entity.Invoice;
 import com.hendisantika.service.ClientService;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,6 +56,27 @@ public class InvoiceController {
                 invoice.getDescription()));
 
         return "invoice/view";
+    }
+
+    /* ----- Create Invoice for Client[id] ----- */
+    @GetMapping("/form/{clientId}")
+    public String create(@PathVariable(value = "clientId") Long clientId, Map<String, Object> model,
+                         RedirectAttributes flash, Locale locale) {
+
+        Client client = clientService.findOne(clientId);
+
+        if (client == null) {
+            flash.addAttribute("error", messageSource.getMessage("text.client.flash.db.error", null, locale));
+            return "redirect:/list";
+        }
+
+        Invoice invoice = new Invoice();
+        invoice.setClient(client);
+
+        model.put("invoice", invoice);
+        model.put("title", messageSource.getMessage("text.invoice.form.title", null, locale));
+
+        return "invoice/form";
     }
 
 }
