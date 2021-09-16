@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,5 +39,20 @@ public class UploadFileService {
         }
 
         return resource;
+    }
+
+    public String copy(MultipartFile file) throws IOException {
+        String uniqueFilename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+        Path rootPath = getPath(uniqueFilename);
+        log.info("rootPath: " + rootPath);
+
+        Files.copy(file.getInputStream(), rootPath);
+
+        // byte[] bytes = photo.getBytes();
+        // Path rootComplete = Paths.get(rootPath + "//" + photo.getOriginalFilename());
+        // Files.write(rootComplete, bytes);
+
+        return uniqueFilename;
     }
 }
