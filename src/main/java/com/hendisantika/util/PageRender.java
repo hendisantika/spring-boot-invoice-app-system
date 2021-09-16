@@ -15,7 +15,6 @@ import java.util.List;
  * Date: 16/09/21
  * Time: 10.15
  */
-@Data
 public class PageRender<T> {
 
     private String url;
@@ -61,5 +60,21 @@ public class PageRender<T> {
         }
     }
 
+    /*----- Getters -----*/
+    public String getUrl() { return url; }
+
+    public int getTotalPages() { return totalPages; }
+
+    public int getActualPage() { return actualPage; }
+
+    public List<PageItem> getPages() { return pages; }
+
+    public boolean isFirst() { return page.isFirst(); }
+
+    public boolean isLast() { return page.isLast(); }
+
+    public boolean isHasNext() { return page.hasNext(); }
+
+    public boolean isHasPrevious() { return page.hasPrevious(); }
 
 }

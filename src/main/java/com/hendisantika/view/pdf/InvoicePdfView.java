@@ -62,9 +62,9 @@ public class InvoicePdfView extends AbstractPdfView {
         // Products Table
         PdfPTable table3 = new PdfPTable(4);
         table3.setWidths(new float[]{3.5f, 1, 1, 1});
-        table3.addCell(message.getMessage("text.invoice.form.item.na,e"));
+        table3.addCell(message.getMessage("text.invoice.form.item.name"));
         table3.addCell(message.getMessage("text.invoice.form.item.price"));
-        table3.addCell(message.getMessage("text.invoice.form.item.amount"));
+        table3.addCell(message.getMessage("text.invoice.form.item.quantity"));
         table3.addCell(message.getMessage("text.invoice.form.item.total"));
 
         for (ItemInvoice item : invoice.getItems()) {

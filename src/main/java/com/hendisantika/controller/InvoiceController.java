@@ -127,7 +127,7 @@ public class InvoiceController {
         clientService.saveInvoice(invoice);
         status.setComplete();
 
-        flash.addFlashAttribute("success", messageSource.getMessage("text.factura.flash.crear.success", null, locale));
+        flash.addFlashAttribute("success", messageSource.getMessage("text.invoice.flash.create.success", null, locale));
 
         return "redirect:/view/" + invoice.getClient().getId();
     }

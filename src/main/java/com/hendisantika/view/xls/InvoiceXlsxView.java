@@ -38,16 +38,16 @@ public class InvoiceXlsxView extends AbstractXlsxView {
 
         response.setHeader("Content-Disposition", "attachment; filename=\"invoice_view.xlsx\"");
         Invoice invoice = (Invoice) model.get("invoice");
-        Sheet sheet = workbook.createSheet("Factura Spring");
+        Sheet sheet = workbook.createSheet("Invoice Spring");
 
         sheet.createRow(0).createCell(0).setCellValue(message.getMessage("text.invoice.view.data.client"));
         sheet.createRow(1).createCell(0).setCellValue(invoice.getClient().getFirstName() + " " + invoice.getClient().getLastName());
         sheet.createRow(2).createCell(0).setCellValue(invoice.getClient().getEmail());
 
         sheet.createRow(4).createCell(0).setCellValue(message.getMessage("text.invoice.view.data.invoice"));
-        sheet.createRow(5).createCell(0).setCellValue(message.getMessage("text.client.view.folio") + ": " + invoice.getId());
-        sheet.createRow(6).createCell(0).setCellValue(message.getMessage("text.client.view.description") + ": " + invoice.getDescription());
-        sheet.createRow(7).createCell(0).setCellValue(message.getMessage("text.client.view.date") + ": " + invoice.getCreateAt());
+        sheet.createRow(5).createCell(0).setCellValue(message.getMessage("text.client.invoice.folio") + ": " + invoice.getId());
+        sheet.createRow(6).createCell(0).setCellValue(message.getMessage("text.client.invoice.description") + ": " + invoice.getDescription());
+        sheet.createRow(7).createCell(0).setCellValue(message.getMessage("text.client.invoice.date") + ": " + invoice.getCreateAt());
 
         CellStyle theaderStyle = workbook.createCellStyle();
         theaderStyle.setBorderBottom(BorderStyle.MEDIUM);
