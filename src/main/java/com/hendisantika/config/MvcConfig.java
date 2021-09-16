@@ -1,5 +1,6 @@
 package com.hendisantika.config;
 
+import com.hendisantika.view.xml.ClientList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -56,7 +57,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public Jaxb2Marshaller jaxb2Marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setClassesToBeBound(com.hendisantika.view.xml.ClientList.class);
+        marshaller.setClassesToBeBound(new Class[] {ClientList.class});
         return marshaller;
     }
 

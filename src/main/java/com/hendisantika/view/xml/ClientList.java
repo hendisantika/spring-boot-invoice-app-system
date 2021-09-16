@@ -19,11 +19,18 @@ import java.util.List;
  * Time: 10.18
  */
 @XmlRootElement(name = "clients")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ClientList {
 
     @XmlElement(name = "client")
     public List<Client> clients;
+
+    public ClientList() {}
+
+    public ClientList(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
 }
