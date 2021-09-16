@@ -132,4 +132,18 @@ public class InvoiceController {
         return "redirect:/view/" + invoice.getClient().getId();
     }
 
+    /* ----- Delete Invoice ----- */
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash, Locale locale) {
+        Invoice invoice = clientService.findInvoiceById(id);
+
+        if (invoice != null) {
+            clientService.deleteInvoice(id);
+            flash.addAttribute("success", messageSource.getMessage("text.invoice.flash.delete.success", null, locale));
+            return "redirect:/view/" + invoice.getClient().getId();
+        }
+
+        flash.addFlashAttribute("error", messageSource.getMessage("text.invoice.flash.db.error", null, locale));
+        return "redirect:/list/";
+    }
 }
