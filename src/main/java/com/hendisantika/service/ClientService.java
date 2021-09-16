@@ -1,10 +1,14 @@
 package com.hendisantika.service;
 
+import com.hendisantika.entity.Client;
 import com.hendisantika.repository.ClientRepository;
 import com.hendisantika.repository.InvoiceRepository;
 import com.hendisantika.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,5 +30,10 @@ public class ClientService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    /*----- Method List -----*/
+    @Transactional(readOnly = true)
+    public List<Client> findAll() {
+        return (List<Client>) clientRepository.findAll();
+    }
 
 }
