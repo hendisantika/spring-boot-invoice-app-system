@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.Locale;
 
 /**
@@ -258,5 +262,32 @@ public class ClientController {
             }
         }
         return "redirect:/list";
+    }
+
+    private boolean hasRole(String role) {
+
+        SecurityContext context = SecurityContextHolder.getContext();
+
+        if (context == null) {
+            return false;
+        }
+        Authentication auth = context.getAuthentication();
+
+        if (auth == null) {
+            return false;
+        }
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+//		Check user authority
+//		 for(GrantedAuthority authority : authorities) {
+//		 if(role.equals(authority.getAuthority())) { logger.info("Hola " +
+//		 auth.getName() + " tu role es: " + authority.getAuthority()); return true; }
+//		 }
+//
+//		 return false;
+
+        // contains(GrantedAuthority) returns true or false if has the collection element or not
+        return authorities.contains(new SimpleGrantedAuthority(role));
+
     }
 }
