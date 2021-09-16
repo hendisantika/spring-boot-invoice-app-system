@@ -1,0 +1,65 @@
+package com.hendisantika.util;
+
+import lombok.Data;
+import org.springframework.data.domain.Page;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by IntelliJ IDEA.
+ * Project : spring-boot-invoice-app-system
+ * User: hendisantika
+ * Email: hendisantika@gmail.com
+ * Telegram : @hendisantika34
+ * Date: 16/09/21
+ * Time: 10.15
+ */
+@Data
+public class PageRender<T> {
+
+    private String url;
+    private Page<T> page;
+
+    private int totalPages;
+
+    private int numElementsByPage;
+
+    private int actualPage;
+
+    private List<PageItem> pages;
+
+    /*----- Constructor -----*/
+    public PageRender(String url, Page<T> page) {
+        this.url = url;
+        this.page = page;
+        this.pages = new ArrayList<PageItem>();
+
+        numElementsByPage = page.getSize();
+        totalPages = page.getTotalPages();
+        actualPage = page.getNumber() + 1;
+
+        /*----- Paginator - First << 1 2 ... n >> Last -----*/
+        int from, upto;
+        if (totalPages <= numElementsByPage) {
+            from = 1;
+            upto = totalPages;
+        } else {
+            if (actualPage <= numElementsByPage / 2) {
+                from = 1;
+                upto = numElementsByPage;
+            } else if (actualPage >= totalPages - numElementsByPage / 2) {
+                from = totalPages - numElementsByPage + 1;
+                upto = numElementsByPage;
+            } else {
+                from = actualPage - numElementsByPage / 2;
+                upto = numElementsByPage;
+            }
+        }
+        for (int i = 0; i < upto; i++) {
+            pages.add(new PageItem(from + i, actualPage == from + i));
+        }
+    }
+
+
+}
