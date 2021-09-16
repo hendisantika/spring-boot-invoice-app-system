@@ -159,4 +159,30 @@ public class ClientController {
         return "form";
     }
 
+    /* ----- Edit Client ----- */
+    // PreAuthorize <=> @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/form/{id}")
+    public String update(@PathVariable(value = "id") Long id, RedirectAttributes flash, Model model, Locale locale) {
+
+        Client client = null;
+
+        // If Customer exist, find
+        if (id > 0) {
+            client = clientService.findOne(id);
+            // If not exist, error
+            if (client == null) {
+                flash.addFlashAttribute("error", messageSource.getMessage("text.client.flash.db.error", null, locale));
+                return "redirect:/list";
+            }
+        } else {
+            flash.addFlashAttribute("error", messageSource.getMessage("text.client.flash.id.error", null, locale));
+            return "redirect:/list";
+        }
+
+        model.addAttribute("client", client);
+        model.addAttribute("title", messageSource.getMessage("text.client.form.title.edit", null, locale));
+
+        return "form";
+    }
 }
