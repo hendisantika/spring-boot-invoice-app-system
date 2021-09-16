@@ -2,6 +2,7 @@ package com.hendisantika.controller;
 
 import com.hendisantika.entity.Client;
 import com.hendisantika.entity.Invoice;
+import com.hendisantika.entity.Product;
 import com.hendisantika.service.ClientService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -77,6 +80,13 @@ public class InvoiceController {
         model.put("title", messageSource.getMessage("text.invoice.form.title", null, locale));
 
         return "invoice/form";
+    }
+
+    /* ----- Autocomplete for Finding Products (autocomplete-products.js)----- */
+    @GetMapping(value = "/load-products/{term}", produces = {"application/json"})
+    public @ResponseBody
+    List<Product> loadProducts(@PathVariable String term) {
+        return clientService.findByName(term);
     }
 
 }
