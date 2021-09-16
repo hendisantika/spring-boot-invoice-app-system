@@ -1,0 +1,106 @@
+/* https://startbootstrap.com/snippets/login/ */
+:root {
+	--input-padding-x: 1.5rem;
+	--input-padding-y: .75rem;
+}
+
+html, body{ 
+  min-height: 100%;
+}
+
+body {
+	height: 100vh;
+}
+
+.card-signin {
+	border: 0.1;
+	border-radius: 1rem;
+}
+
+.card-signin .card-title {
+	margin-bottom: 2rem;
+	font-weight: 300;
+	font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+	padding: 3.5rem 2rem;
+}
+
+.table td, .table th {
+	vertical-align: middle;
+}
+
+.mibtn-sm {
+	padding: .8rem 1rem !important;
+	font-size: .7rem !important;
+}
+
+.mibtn-md {
+	padding: .7rem .8rem !important;
+	font-size: .7rem !important;
+}
+
+.trash-icon {
+	font-size: 0.8rem;
+}
+
+.btn-rounded {
+	border-radius: 10em !important;
+	padding: 0.63rem 0 !important;
+}
+
+.md-form label.active {
+	transform: translateY(-18px) scale(0.8) !important;
+}
+
+.navbar .dropdown-menu form {
+	width: 10rem;
+}
+
+#footer {
+   	width: 100%;
+   	color: #fff;
+   	bottom: 0;
+   	height: 9rem;
+}
+
+#footer p {
+	margin: 0 !important;
+}
+
+.correo {
+	color: #000 !important;
+}
+
+.correo:hover,
+.correo.focus {
+	color: #e0e0e0 !important;
+}
+
+.github {
+	color: #000 !important;
+}
+
+.github:hover,
+.github:focus {
+  color: #e0e0e0  !important;
+}
+
+.linkedin {
+  color: #007BB5 !important;
+}
+
+.linkedin:hover,
+.linkedin:focus {
+  color: #33b5e5 !important;
+}
+
+.ig {
+color: #e1306c !important;	
+}
+
+.ig:hover,
+.ig:focus {
+  color: #f48fb1 !important;
+}
