@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +42,7 @@ public class Invoice implements Serializable {
     @Column(name = "create_at")
     private Date createAt;
 
+    @XmlTransient
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Client client;
@@ -69,4 +71,7 @@ public class Invoice implements Serializable {
         return total;
     }
 
+    public void addItemInvoice(ItemInvoice item) {
+        this.items.add(item);
+    }
 }
