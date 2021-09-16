@@ -16,7 +16,7 @@
 				<div class="row mb-0">
 					<a th:href="@{'/list/'}" class="btn btn-link btn-sm mb-3">
 						<i class="fas fa-arrow-left"></i>
-						<span th:utext="' ' + #{text.global.volver}"></span>
+						<span th:utext="' ' + #{text.global.back}"></span>
 					</a>
 				</div>
 
@@ -35,9 +35,9 @@
 					<div class="col-12 col-lg-9 align-self-center">
 						<ul class="list-group shadow-sm rounded">
 							<li class="list-group-item"
-								th:text="#{text.client.nombre} + ': ' + ${client.firstName}"></li>
+								th:text="#{text.client.name} + ': ' + ${client.firstName}"></li>
 							<li class="list-group-item"
-								th:text="#{text.client.apellido} + ': ' + ${client.lastName}"></li>
+								th:text="#{text.client.lastname} + ': ' + ${client.lastName}"></li>
 							<li class="list-group-item"
 								th:text="#{text.client.email} + ': ' + ${client.email}"></li>
 							<li class="list-group-item"
@@ -59,7 +59,7 @@
 
 				<div th:if="${#lists.isEmpty(client.invoices)}"
 					class="alert alert-info my-4"
-					th:text="#{text.client.detail.no.invoice} + ' ' + ${client.firstName} + ' ' + ${client.lastName} + '.'"></div>
+					th:text="#{text.client.details.no.invoice} + ' ' + ${client.firstName} + ' ' + ${client.lastName} + '.'"></div>
 				<div class="table-responsive">
 
 					<table th:if="${not #lists.isEmpty(client.invoices)}"
@@ -75,7 +75,7 @@
 									class="fas fa-home"></i> <span
 										th:utext="' ' + #{text.global.back}"></span>view</th>
 								<th sec:authorize="hasRole('ROLE_ADMIN')"
-									th:text="#{text.cliente.factura.eliminar}"><i
+									th:text="#{text.client.invoice.delete}"><i
 									class="fas fa-home"></i> <span
 										th:utext="' ' + #{text.global.back}"></span>delete</th>
 						</thead>
