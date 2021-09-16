@@ -7,6 +7,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -54,5 +55,15 @@ public class UploadFileService {
         // Files.write(rootComplete, bytes);
 
         return uniqueFilename;
+    }
+
+    public boolean delete(String filename) {
+        Path rootPath = getPath(filename);
+        File file = rootPath.toFile();
+
+        if (file.exists() && file.canRead()) {
+            return file.delete();
+        }
+        return false;
     }
 }
