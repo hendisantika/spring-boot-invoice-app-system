@@ -56,4 +56,14 @@ public class UserRegistrationController {
             System.out.println("user exist");
             return "signup";
         }
+        String flashMsg = "";
+
+        if (user.getUsername() != null) {
+            flashMsg = messageSource.getMessage("text.signup.flash.create.success", null, locale);
+        }
+
+        userService.save(user);
+        flash.addFlashAttribute("success", flashMsg);
+        return "redirect:/login";
     }
+}
