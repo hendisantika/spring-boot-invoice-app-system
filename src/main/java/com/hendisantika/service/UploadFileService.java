@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -65,5 +67,17 @@ public class UploadFileService {
             return file.delete();
         }
         return false;
+    }
+
+    public Path getPath(String filename) {
+        return Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
+    }
+
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(Paths.get(UPLOADS_FOLDER).toFile());
+    }
+
+    public void init() throws IOException {
+        Files.createDirectory(Paths.get(UPLOADS_FOLDER));
     }
 }
