@@ -3,7 +3,6 @@ package com.hendisantika.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.math3.stat.descriptive.summary.Product;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
