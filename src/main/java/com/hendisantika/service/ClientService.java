@@ -1,6 +1,7 @@
 package com.hendisantika.service;
 
 import com.hendisantika.entity.Client;
+import com.hendisantika.entity.Invoice;
 import com.hendisantika.entity.Product;
 import com.hendisantika.repository.ClientRepository;
 import com.hendisantika.repository.InvoiceRepository;
@@ -72,5 +73,17 @@ public class ClientService {
     @Transactional(readOnly = true)
     public List<Product> findByName(String term) {
         return productRepository.findByName(term);
+    }
+
+    /*----- Method Save (Invoice) -----*/
+    @Transactional
+    public void saveInvoice(Invoice invoice) {
+        invoiceRepository.save(invoice);
+    }
+
+    /*----- Method Find Product by ID -----*/
+    @Transactional(readOnly = true)
+    public Product findProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
     }
 }
