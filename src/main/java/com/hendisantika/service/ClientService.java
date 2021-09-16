@@ -50,4 +50,14 @@ public class ClientService {
         return clientRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public Client fetchByIdWithInvoices(Long id) {
+        return clientRepository.fetchByIdWithInvoices(id);
+    }
+
+    /*----- Method Save -----*/
+    @Transactional
+    public void save(Client client) {
+        clientRepository.save(client);
+    }
 }
