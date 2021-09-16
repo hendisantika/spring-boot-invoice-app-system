@@ -86,4 +86,22 @@ public class ClientService {
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
+    /*----- Method Find by ID (Invoice) -----*/
+    @Transactional(readOnly = true)
+    public Invoice findInvoiceById(Long id) {
+        return invoiceRepository.findById(id).orElse(null);
+    }
+
+    /*----- Method Delete (Invoice) -----*/
+    @Transactional
+    public void deleteInvoice(Long id) {
+        invoiceRepository.deleteById(id);
+    }
+
+    /*----- Method Fetch Invoice with Client with Invoice -----*/
+    @Transactional(readOnly = true)
+    public Invoice fetchInvoiceByIdWithClientWithInvoiceItemWithProduct(Long id) {
+        return invoiceRepository.fetchByIdWithClientWithInvoiceItemWithProduct(id);
+    }
 }
