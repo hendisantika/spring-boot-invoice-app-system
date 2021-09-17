@@ -35,3 +35,39 @@ Heroku: https://invoice1demo1.herokuapp.com
 
 ## Screen shot
 
+User Registration
+
+![User Registration](img/register.png "User Registration")
+
+User Login
+
+![User Login](img/login.png "User Login")
+
+Index Page
+
+![Index Page](img/index1.png "Index Page")
+
+![Index Page](img/index2.png "Index Page")
+
+New Customer
+
+![New Customer](img/new-customer.png "New Customer")
+
+New Invoice
+
+![New Invoice](img/new-invoice.png "New Invoice")
+
+Customer Details
+
+![Customer Details](img/customer-details.png "Customer Details")
+
+![Customer Details](img/customer-details2.png "Customer Details")
+
+Customer Invoice
+
+![Customer Invoice](img/customer-invoice.png)
+
+Invoice PDF
+
+![Invoice PDF](img/pdf.png "Invoice PDF")
+
