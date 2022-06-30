@@ -3,7 +3,7 @@
 
 name: Invoice-App
 env:
-  MYSQL_DATABASE: lte
+  MYSQL_DATABASE: invoice
   MYSQL_USER: root
   MYSQL_PASSWORD: 'root'
   MYSQL_HOST: localhost
@@ -15,7 +15,7 @@ on:
     branches: [ main ]
 
 jobs:
-  Set-up-JDK-11:
+  build:
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -29,27 +29,12 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
-
-  maven-package:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-          cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-  maven-install:
-    runs-on: ubuntu-latest
-    steps:
       - name: Maven Install
         run: mvn clean install
 
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
