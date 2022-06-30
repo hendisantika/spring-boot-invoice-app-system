@@ -15,27 +15,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  Set-up-JDK-11:
     runs-on: ubuntu-latest
-    #    services:
-    #      mysql8:
-    #        image: mysql
-    #        ports:
-    #          - 3306/tcp
-    #        env:
-    #          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
-    #          MYSQL_USER: ${{ env.MYSQL_USER }}
-    #          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
-    #          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASSWORD }}
-    #          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    #          options: >-
-    #            --name=mysql8
-    #            --health-cmd="mysqladmin ping"
-    #            --health-interval=10s
-    #            --health-timeout=5s
-    #            --health-retries=3
-    #        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
       - run: |
           sudo /etc/init.d/mysql start
@@ -48,12 +29,22 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
+
+  maven-package:
+    runs-on: ubuntu-latest
+    steps:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
+  maven-install:
+    runs-on: ubuntu-latest
+    steps:
       - name: Maven Install
         run: mvn clean install
 
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
