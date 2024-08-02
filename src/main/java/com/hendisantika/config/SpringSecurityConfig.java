@@ -2,12 +2,13 @@ package com.hendisantika.config;
 
 import com.hendisantika.service.JpaUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,9 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Date: 16/09/21
  * Time: 11.02
  */
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 @Configuration
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SpringSecurityConfig {
 
     @Autowired
     private JpaUserDetailsService userDetailsService;
@@ -29,12 +30,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder passwordEncoder;
 
     // Method for http authorization
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/list", "/locale", "/api/**",
-                        "/signup").permitAll()
-                .anyRequest().authenticated()
-                .and()
+    @Bean
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(req -> req
+                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/list", "/locale", "/api/**",
+                                "/signup").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .formLogin().loginPage("/login").permitAll()
                 .defaultSuccessUrl("/")
                 .and()
@@ -43,7 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedPage("/error_403")
                 .and()
                 .rememberMe();
-
+        return http.build();
     }
 
     @Autowired
